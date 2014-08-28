@@ -8,7 +8,7 @@
 <br>
 <div style="padding:40px 20px 40px 20px">
 <g:form action="MakePoem">
-	<input type="submit" value= "Create One!"  style="cursor:pointer; background-color: #f7ffcc"/>
+	<input type="submit" value= "Create!"  style="cursor:pointer; background-color: #f7ffcc"/>
 	<br><br>
 </g:form>
 	<div style="font-size:12px">

@@ -1,20 +1,22 @@
 package poemgenerator
-import poemgenerator.poem.Poem
 
 class BuildPoemController {
+	
+	def poemSvc
 
     def index = {
+		poemSvc = new PoemService()
+		
 	   redirect (action: MakePoem)
 	}
 	
 	def MakePoem = {
-		def poem = new Poem()
+	
+		poemSvc.getPoem()
 		
-		def numLines = poem.noOfLines
-		
-		poem.BuildPoem()
-		
-	   [lines: poem.lines, lineNums: numLines]
+		[lines: poemSvc.lines]
 	}
+	
+
 	
 }
