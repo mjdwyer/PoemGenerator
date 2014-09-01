@@ -5,6 +5,7 @@ class Rules {
 		
 		def ruleType
 		def rules
+		private retString
 		
 		public Rules(final def ruleT){
 			
@@ -12,7 +13,13 @@ class Rules {
 		
 		RulesFileParser rfp = new RulesFileParser("rules.txt")
 		
-		rules = rfp.GetTypeRules(ruleType).split(" ")
+		retString = rfp.GetTypeRules(ruleType)
+		
+		if (retString != null){
+			rules = retString.split(" ")
+		}
+		
+		rules
 		
 		}
 }

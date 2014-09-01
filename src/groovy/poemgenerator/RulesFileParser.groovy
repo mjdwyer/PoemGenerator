@@ -8,10 +8,13 @@ class RulesFileParser {
 
 	public RulesFileParser(String inFileName){
 		
+		
 		rulesStream = this.class.classLoader.getResourceAsStream(inFileName)
 		
-		
-		br = new BufferedReader(new InputStreamReader(rulesStream));
+		if (rulesStream)
+		{
+			br = new BufferedReader(new InputStreamReader(rulesStream));
+		}
 		
 		
 	}
@@ -24,15 +27,17 @@ class RulesFileParser {
 		def rulesArray
 		def rulesString
 		def rules
-	
-		while ((line = br.readLine()) != null) {
-			if (line.substring(0, ruleType.size()) == ruleType){
-				lineArray = line.split(": ")
-				rulesString = lineArray[1]
-				break
+		
+		if(br)
+		{
+			while ((line = br.readLine()) != null) {
+				if (line.substring(0, ruleType.size()) == ruleType){
+					lineArray = line.split(": ")
+					rulesString = lineArray[1]
+					break
+				}
 			}
 		}
-		
 		rulesString
 		
 	}

@@ -15,6 +15,17 @@ class BuildPoemControllerSpec extends Specification {
     def cleanup() {
     }
 
-    void "test something"() {
+	void "test index"() {
+        when:
+        controller.index()
+
+        then:
+        response.redirectedUrl == '/buildPoem/makePoem'
     }
+
+
+
+
+
+
 }
