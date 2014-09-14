@@ -3,45 +3,32 @@ package poemgenerator
 
 class RulesFileParser {
 	
-	private InputStream rulesStream
-	private BufferedReader br
+	def rules = []
+	def ruleTypes = []
 
-	public RulesFileParser(String inFileName){
+	public RulesFileParser(){
 		
+		def rulesStream
+		def br
+		def line
+		def ruleTemp = []
 		
-		rulesStream = this.class.classLoader.getResourceAsStream(inFileName)
+		rulesStream = this.class.classLoader.getResourceAsStream("rules.txt")
 		
 		if (rulesStream)
 		{
 			br = new BufferedReader(new InputStreamReader(rulesStream));
-		}
-		
-		
-	}
-	
-
-	public GetTypeRules(String ruleType){
-		
-		String line;
-		def lineArray
-		def rulesArray
-		def rulesString
-		def rules
-		
-		if(br)
-		{
-			while ((line = br.readLine()) != null) {
-				if (line.substring(0, ruleType.size()) == ruleType){
-					lineArray = line.split(": ")
-					rulesString = lineArray[1]
-					break
+			if (br)
+			{
+				while ((line = br.readLine()) != null) {
+					ruleTemp = line.split(": ")
+					ruleTypes.add("<" + ruleTemp[0] + ">")
+					rules.add(ruleTemp[1])
 				}
 			}
+	
 		}
-		rulesString
 		
 	}
-
-
-	
 }
+

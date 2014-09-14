@@ -7,87 +7,75 @@ import java.util.Random
 @Transactional
 class PoemService {
 	
-	def lines = []
+	Rules theRules
 	
-	def line= ""
-	
-	Rules poemRules = new Rules("POEM")
-	Rules lineRules = new Rules("LINE")
-	Rules adjectiveRules = new Rules("ADJECTIVE")
-	Rules nounRules = new Rules("NOUN")
-	Rules pronounRules = new Rules("PRONOUN")
-	Rules prepositionRules = new Rules("PREPOSITION")
-	Rules verbRules = new Rules("VERB")
-	
-    def getPoem() {
+
+	def getPoem() {
 		
-		lines.clear()
+		def ruleItem
+		def lines = []
+		def line = ""
 		
-		for(int i = 0; i < poemRules.rules.size(); i++){
+		theRules = new Rules()
+		
+		def poemIndex =  theRules.ruleTypes.findIndexOf { name -> name == "<POEM>"} 
+		
+		def poemRules = theRules.rules[poemIndex].split(" ")
+		
+		for(int i = 0; i < poemRules.size(); i++){
 			
-			ProcessRule(lineRules)
+			ruleItem = poemRules[i]
+			
+			line = ProcessRule(ruleItem, line)
+			
+			lines.add(line)
+			
+			line= ""
 		}
+		
+		lines
 
     }
 	
-	def private ProcessRule(Rules ruleObj){
+	def private ProcessRule(ruleItem, line){
 		
 		def ruleValue
-		String ruleItem
+		def ruleIdx
 		
-		for(int i = 0; i < ruleObj.rules.size(); i++){
+		if (ruleItem.indexOf("|") > 0)
+		{
+			ruleValue = GetRandomValue(ruleItem)
+		}
+		else
+		{
+			ruleValue = ruleItem
+		}
+		
+		if (ruleValue.indexOf("<") >= 0)
+		{
 			
-			ruleItem = ruleObj.rules[i]
+			ruleIdx =  theRules.ruleTypes.findIndexOf { name -> name == ruleValue} 
 			
-			if (ruleItem.indexOf("|") > 0)
-			{
-				ruleValue = GetRandomValue(ruleItem)
-			}
-			else
-			{
-				ruleValue = ruleItem
-			}
+			def rules = theRules.rules[ruleIdx].split(" ")
 			
-			if (ruleValue.indexOf("<") >= 0)
-			{
-				switch ( ruleValue ) {
-				    case "<NOUN>":
-				        ProcessRule(nounRules)
-				        break
+			for(int i = 0; i < rules.size(); i++){
 				
-				    case "<ADJECTIVE>":
-				        ProcessRule(adjectiveRules)
-				        break
+				ruleItem = rules[i]
 				
-				    case "<PREPOSITION>":
-				        ProcessRule(prepositionRules)
-				        break
-				
-				    case "<PRONOUN>":
-				        ProcessRule(pronounRules)
-				        break
-				
-				    case "<VERB>":
-				        ProcessRule(verbRules)
-				        break
-				
-				    default:
-				        ruleValue = "default"
-				}
-			}
-			else if (ruleValue.indexOf("\$") >= 0) 
-			{
-				if (ruleValue == "\$LINEBREAK")
-				{
-					lines.add(line)
-					line = ""
-				}
-			}
-			else // this is a plain text word
-			{
-				line = line + " " + ruleValue
+				line = ProcessRule(ruleItem, line)
+		
 			}
 		}
+		else if (ruleValue.indexOf("\$") >= 0) 
+		{
+			//just return - end of line
+		}
+		else // this is a plain text word
+		{
+			line = line + " " + ruleValue
+		}
+		
+		line
 		
 	}
 	

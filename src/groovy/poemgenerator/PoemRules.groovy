@@ -2,24 +2,18 @@ package poemgenerator
 
 	
 class Rules {
+	
+		private ruleTypes
+		private rules
 		
-		def ruleType
-		def rules
-		private retString
-		
-		public Rules(final def ruleT){
+		public Rules(){
 			
-		this.ruleType = ruleT
-		
-		RulesFileParser rfp = new RulesFileParser("rules.txt")
-		
-		retString = rfp.GetTypeRules(ruleType)
-		
-		if (retString != null){
-			rules = retString.split(" ")
-		}
-		
-		rules
-		
+				
+			RulesFileParser rfp = new RulesFileParser()
+			
+			ruleTypes = rfp.ruleTypes
+			
+			rules = rfp.rules
+			
 		}
 }

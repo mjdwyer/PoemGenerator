@@ -2,19 +2,18 @@ package poemgenerator
 
 class BuildPoemController {
 	
-	def poemSvc
-
+	def PoemService
+	
     def index = {
-		poemSvc = new PoemService()
 		
 	   redirect (action: MakePoem)
 	}
 	
 	def MakePoem = {
-	
-		poemSvc.getPoem()
+
+		def lines = PoemService.getPoem()
 		
-		[lines: poemSvc.lines]
+		[lines: lines]
 	}
 	
 
